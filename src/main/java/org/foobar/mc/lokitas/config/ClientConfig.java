@@ -38,6 +38,7 @@ public class ClientConfig {
 
     private void loadFrom(final Path configFile)
     {
+        LOGGER.info("Got game settings from {}", configFile.toString());
         configData = CommentedFileConfig.builder(configFile).sync().
                 defaultResource(String.format("/META-INF/%s.toml",MOD_ID)).
                 autosave().autoreload().
