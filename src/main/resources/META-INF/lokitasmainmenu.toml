@@ -1,0 +1,4 @@
+server_name = "localhost"
+server_ip = "localhost:25699"
+lan = true
+menu_play = "PLAY LOKITASLAND"
