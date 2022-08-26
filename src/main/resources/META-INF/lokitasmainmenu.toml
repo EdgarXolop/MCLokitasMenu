@@ -1,4 +1,4 @@
-server_name = "localhost"
-server_ip = "localhost:25699"
-lan = true
+server_name = "lokitas.apexmc.co"
+server_ip = "104.194.2.202:25699"
+lan = false
 menu_play = "PLAY LOKITASLAND"
