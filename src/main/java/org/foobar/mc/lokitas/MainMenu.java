@@ -1,6 +1,7 @@
 package org.foobar.mc.lokitas;
 
 import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -9,6 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -34,13 +36,18 @@ public class MainMenu
     private static final Logger LOGGER = LogManager.getLogger();
 
     public MainMenu() {
-        // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        // Register the doClientStuff method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            // Register the setup method for modloading
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+            // Register the doClientStuff method for modloading
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+
+            // Register ourselves for server and other game events we are interested in
+            MinecraftForge.EVENT_BUS.register(this);
+        } else {
+            System.out.println("Why did you put this on a dedicated server?");
+        }
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -70,13 +77,6 @@ public class MainMenu
         }catch (IOException ex){
 
         }
-    }
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
-        // do something when the server starts
-        LOGGER.info("Nothing to do on the server side.");
     }
 
     @SubscribeEvent
